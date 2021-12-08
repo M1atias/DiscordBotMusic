@@ -1,0 +1,22 @@
+{
+  "name": "discordbotmusic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/M1atias/DiscordBotMusic.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/M1atias/DiscordBotMusic/issues"
+  },
+  "homepage": "https://github.com/M1atias/DiscordBotMusic#readme",
+  "dependencies": {
+    "discord.js": "^12.4.0"
+  }
+}
