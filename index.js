@@ -47,6 +47,9 @@ client.on('message', async(message) =>{
         case 'queue':
             Queue(serverQueue);
             break;
+        case 'rules':
+            rules();
+            break;
     }
 
     async function execute(message, serverQueue){
@@ -196,6 +199,17 @@ client.on('message', async(message) =>{
         }
 
         message.channel.send('```' + qMsg + 'Requested by: ' + message.author.username + '```');
+    }
+
+    function rules(){
+        message.channel.send(`!play <music> Playing music or add music playlist\n
+        !skip Skipping music\n
+        !pause Stop playing music \n
+        !resume Resume playing music\n
+        !loop one Loop one music of the playlist \n
+        !loop all Loop all music of the playlist \n
+        !queue Question playing music \n
+        !stop Finish playing music`);
     }
 })
 
