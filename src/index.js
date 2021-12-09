@@ -1,5 +1,6 @@
 const {executionAsyncResource} = require('async_hooks');
 const discord = require('discord.js');
+const { lookup } = require('dns');
 const { resourceLimits } = require('worker_threads');
 const ytdl = require('ytdl-core');
 
@@ -40,6 +41,12 @@ client.on('message', async(message) =>{
         case 'resume':
             resume(serverQueue);
             break;
+        case 'loop':
+            Loop(args,serverQueue);
+            break;
+        case 'queue':
+            Queue(serverQueue);
+            break;
     }
 
     async function execute(message, serverQueue){
@@ -62,7 +69,9 @@ client.on('message', async(message) =>{
                     connection: null,
                     songs: [],
                     volume: 5,
-                    playing: true
+                    playing: true,
+                    loopone:false,
+                    loopall:false
                 };
                 queue.set(message.guild.id, queueConstructor);
 
@@ -93,7 +102,14 @@ client.on('message', async(message) =>{
         const dispatcher = serverQueue.connection
             .play(ytdl(song.url))
             .on('finish', () =>{
-                serverQueue.songs.shift();
+                if(serverQueue.loopone){
+                    play(guild,serverQueue.songs[0]);
+                }else if(serverQueue.loopall){
+                    serverQueue.songs.push(serverQueue.songs[0]);
+                    serverQueue.songs.shift();
+                }else{
+                    serverQueue.songs.shift();
+                }
                 play(guild,serverQueue.songs[0]);
             })
             serverQueue.txtChannel.send(`Now playing ${serverQueue.songs[0].url}`)
@@ -132,6 +148,55 @@ client.on('message', async(message) =>{
         serverQueue.connection.dispatcher.resume();
         message.channel.send('The song has been resumed!!');
     }
+
+    function Loop(args,serverQueue){
+        if (!serverQueue.connection)
+            return message.channel.send('There is no mucisc currently playing!!!');
+        if (!message.member.voice.channel)
+            return message.channel.send('You are not in the voice channel');
+        switch(args[0].toLocaleLowerCase()){
+            case 'all':
+                serverQueue.loopall = !serverQueue.loopall;
+                serverQueue.loopone = false;
+                if(serverQueue.loopall === true){
+                    message.channel.send('Lopp all has been turned on!!');
+                }else{
+                    message.channel.send('Lopp all has been turned off!!')
+                }
+                break;
+            case 'one':
+                serverQueue.loopone = !serverQueue.loopone;
+                serverQueue.loopall = false;
+                if(serverQueue.loopone === true){
+                    message.channel.send('Lopp one has been turned on!!');
+                }else{
+                    message.channel.send('Lopp one has been turned off!!')
+                }
+                break;
+            case 'off':
+                    serverQueue.loopall = false;
+                    serverQueue.loopone = false;
+
+                    message.channel.send('Loop has been turned off!!!');
+                break;
+            default:
+                message.channel.send('Please specify what loop you want. !lopp <one/all/off>');
+        }
+    }
+    function Queue(serverQueue){
+        if (!serverQueue.connection)
+            return message.channel.send('There is no mucisc currently playing!!!');
+        if (!message.member.voice.channel)
+            return message.channel.send('You are not in the voice channel');
+        let nowPlating = serverQueue.songs[0];
+        let qMsg = `Now plating: ${nowPlating.title}\n--------------------\n`
+
+        for(var i =1; i < serverQueue.songs.length; i++){
+            qMsg += `${i}. ${serverQueue.songs[i].title}\n`
+        }
+
+        message.channel.send('```' + qMsg + 'Requested by: ' + message.author.username + '```');
+    }
 })
 
-client.login('OTE4Mjc5MjcyMDY4NjgxNzM5.YbE8Nw.nZqjlDTu29RT3RZmIdSu6YnGfVE')
+client.login('OTE4Mjc5MjcyMDY4NjgxNzM5.YbE8Nw.1LsrbAYCbM0yNvm5A7hsrQlCQgs')
