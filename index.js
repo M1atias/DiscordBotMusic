@@ -202,7 +202,8 @@ client.on('message', async(message) =>{
     }
 
     function rules(){
-        message.channel.send(`!play <music> Playing music or add music playlist\n
+        message.channel.send(`\n
+        !play <music> Playing music or add music playlist\n
         !skip Skipping music\n
         !pause Stop playing music \n
         !resume Resume playing music\n
