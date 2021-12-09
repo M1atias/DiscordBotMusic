@@ -7,7 +7,7 @@ const ytdl = require('ytdl-core');
 const {YTSearcher} = require('ytsearcher');
 
 const searcher = new YTSearcher({
-    key:'AIzaSyC4BHgHevv6zDAcb8yvSl5T_rxI53GoBBw',
+    key:process.env.youtube,
     revealed: true
 });
 
@@ -199,4 +199,4 @@ client.on('message', async(message) =>{
     }
 })
 
-client.login('OTE4Mjc5MjcyMDY4NjgxNzM5.YbE8Nw.Cz45EdlTrKORnBQpBPjCc3eulbA')
+client.login(process.env.token)
