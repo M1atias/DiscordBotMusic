@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/M1atias/DiscordBotMusic#readme",
   "dependencies": {
-    "discord.js": "^12.4.0"
+    "discord.js": "^12.4.0",
+    "ytdl-core": "^4.9.1",
+    "ytsearcher": "^1.2.3"
   }
 }
