@@ -1,5 +1,6 @@
 const {executionAsyncResource} = require('async_hooks');
 const discord = require('discord.js');
+const { resourceLimits } = require('worker_threads');
 const ytdl = require('ytdl-core');
 
 const {YTSearcher} = require('ytsearcher');
@@ -32,6 +33,12 @@ client.on('message', async(message) =>{
             break;
         case 'skip':
             skip(message,serverQueue);
+            break;
+        case 'pause':
+            pause(serverQueue);
+            break;
+        case 'resume':
+            resume(serverQueue);
             break;
     }
 
@@ -105,6 +112,26 @@ client.on('message', async(message) =>{
             return message.channel.send('There is nothing to skip');
         serverQueue.connection.dispatcher.end();
     }
+    function pause(serverQueue){
+        if (!serverQueue.connection)
+            return message.channel.send('There is no mucisc currently playing!!!');
+        if (!message.member.voice.channel)
+            return message.channel.send('You are not in the voice channel');
+        if(serverQueue.connection.dispatcher.paused)
+            return message.channel.send('The song is already paused');
+        serverQueue.connection.dispatcher.pause();
+        message.channel.send('The song has been paused!!');
+    }
+    function resume(serverQueue){
+        if (!serverQueue.connection)
+            return message.channel.send('There is no mucisc currently playing!!!');
+        if (!message.member.voice.channel)
+            return message.channel.send('You are not in the voice channel');
+        if(serverQueue.connection.dispatcher.resumed)
+            return message.channel.send('The song is already playing!!');
+        serverQueue.connection.dispatcher.resume();
+        message.channel.send('The song has been resumed!!');
+    }
 })
 
-client.login('OTE4Mjc5MjcyMDY4NjgxNzM5.YbE8Nw.dll95yBDC_e0TkB1R9eG0mmscqk')
+client.login('OTE4Mjc5MjcyMDY4NjgxNzM5.YbE8Nw.nZqjlDTu29RT3RZmIdSu6YnGfVE')
