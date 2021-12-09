@@ -199,4 +199,4 @@ client.on('message', async(message) =>{
     }
 })
 
-client.login('OTE4Mjc5MjcyMDY4NjgxNzM5.YbE8Nw.1LsrbAYCbM0yNvm5A7hsrQlCQgs')
+client.login('OTE4Mjc5MjcyMDY4NjgxNzM5.YbE8Nw.Cz45EdlTrKORnBQpBPjCc3eulbA')
